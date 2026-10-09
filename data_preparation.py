@@ -12,4 +12,7 @@ def clean(text):
     return text_uni
 
 df['brand_clean'] = df['original'].apply(clean)
+
+df.drop_duplicates(subset=['brand_clean'], inplace=True)
+
 df.to_csv('data/brands_cleaned.csv', index=False, encoding='utf-8')
