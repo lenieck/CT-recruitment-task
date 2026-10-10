@@ -1,18 +1,24 @@
-import pandas as pd
+import re
 import unicodedata
+import pandas as pd
 
 df = pd.read_csv("data/brands_raw.csv")
+df = df.rename(columns={"brand": "original"})
 
-df.rename(columns={"brand": "original"}, inplace=True)
 
 def clean(text):
     text = str(text).lower()
-    text_norm = unicodedata.normalize('NFKD', text)  
-    text_uni = ''.join([c for c in text_norm if not unicodedata.combining(c)])  
-    return text_uni
+    for sign in ["’", "‘", "′", "`", "´"]:
+        text = text.replace(sign, "'")
+    text = re.sub(r"\(.*?\)", " ", text)
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join([c for c in text if not unicodedata.combining(c)])
+    text = " ".join(text.split())
+    return text
 
-df['brand_clean'] = df['original'].apply(clean)
 
-df.drop_duplicates(subset=['brand_clean'], inplace=True)
+df["brand_clean"] = df["original"].apply(clean)
+df = df[df["brand_clean"] != ""]
+df = df.drop_duplicates(subset=["brand_clean"])
 
-df.to_csv('data/brands_cleaned.csv', index=False, encoding='utf-8')
+df.to_csv("data/brands_cleaned.csv", index=False, encoding="utf-8")
