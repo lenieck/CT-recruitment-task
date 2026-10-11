@@ -20,7 +20,7 @@ The 127 brands with URLs returned 313 unique URLs in total.
 
 ## What I focused on
 
-The main priorities were automation and the correctness of the URLs, and not the length of the final list. Every brand goes through the same steps and receives a query built in the same way, so the pipeline can be used for a much longer list of brands without any changes. The only manual step is the review of the returned URLs at the end. As a consequence, the final list is relatively short, which is discussed in the section about limitations.
+The main priorities were automation and the correctness of the URLs, and not the length of the final list. Every brand is processed by the same algorithm, without any brand-specific exceptions; the rules are applied automatically depending on the form of the name, so the pipeline can be used for a much longer list of brands without any changes. The only manual step is the review of the returned URLs at the end. As a consequence, the final list is relatively short, which is discussed in the section about limitations.
 
 ## Method
 ### Collecting the brands
