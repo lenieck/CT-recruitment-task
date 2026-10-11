@@ -4,7 +4,7 @@ import re
 import unicodedata
 
 INPUT_FILE = "data/brands_cleaned.csv"
-OUTPUT_FILE = "kleniec.json"
+OUTPUT_FILE = "data/queries.json"
 OPTIONAL_THRESHOLD = 1
 
 ALCOHOL_WORDS = [
@@ -32,6 +32,31 @@ ALCOHOL_WORDS = [
     "alcohol", "alcoholic",
     "distillery", "distilleries",
     "distilled", "distilling",
+    "scotch",
+    "single-malt",
+    "veviski",
+    "viski",
+    "cider", "ciders",
+    "sake",
+    "soju",
+    "shochu",
+    "baijiu",
+    "pisco",
+    "cachaca",
+    "amaro",
+    "grappa",
+    "calvados",
+    "armagnac",
+    "bitters",
+    "aperitif",
+    "sambuca",
+    "limoncello",
+    "amaretto",
+    "abv",
+    "distiller", "distillers",
+    "brewery", "breweries",
+    "winery", "wineries",
+    "drink", "drinks"
 ]
 
 OPTIONAL = [{"keyword": word, "mode": "m"} for word in ALCOHOL_WORDS]
@@ -59,7 +84,7 @@ def main():
     seen = set()
     with open(INPUT_FILE, encoding="utf-8", newline="") as file:
         for row in csv.DictReader(file):
-            required = build_required(row["brand_clean"])
+            required = build_required(row["brand"])
             if not required:
                 continue
             key = json.dumps(required)
@@ -67,7 +92,7 @@ def main():
                 continue
             seen.add(key)
             results.append({
-                "id": row["original"],
+                "id": row["brand"],
                 "required": required,
                 "optional": OPTIONAL,
                 "optionalThreshold": OPTIONAL_THRESHOLD,

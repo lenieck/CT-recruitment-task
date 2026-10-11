@@ -1,9 +1,10 @@
 import re
 import unicodedata
+
 import pandas as pd
 
-df = pd.read_csv("data/brands_raw.csv")
-df = df.rename(columns={"brand": "original"})
+INPUT_FILE = "data/brands_raw.csv"
+OUTPUT_FILE = "data/brands_cleaned.csv"
 
 
 def clean(text):
@@ -17,8 +18,10 @@ def clean(text):
     return text
 
 
-df["brand_clean"] = df["original"].apply(clean)
-df = df[df["brand_clean"] != ""]
-df = df.drop_duplicates(subset=["brand_clean"])
+df = pd.read_csv(INPUT_FILE)
+df["brand"] = df["brand"].apply(clean)
+df = df[df["brand"] != ""]
+df = df.drop_duplicates(subset=["brand"])
+df = df[["brand"]]
 
-df.to_csv("data/brands_cleaned.csv", index=False, encoding="utf-8")
+df.to_csv(OUTPUT_FILE, index=False, encoding="utf-8")
